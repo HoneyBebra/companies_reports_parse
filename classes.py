@@ -13,7 +13,8 @@ class Yahoo:
         options = webdriver.ChromeOptions()
         options.add_argument('--headless')
         self.driver = webdriver.Chrome(
-            r'/Users/pavelseryi/PycharmProjects/pythonProject/Price_pars/chromedriver', options=options)
+            r'C:\Users\Daniil Romanenko\PycharmProjects\pythonProject1\Pars\Price_Pars\chromedriver.exe',
+            options=options)
 
     def get_url(self, ticker):
         report_type = {'Income Statement': 'financials',
