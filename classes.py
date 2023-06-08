@@ -40,7 +40,8 @@ class Yahoo:
 
         head = ['Breakdown']
         for col_name in self.driver.find_elements(By.CLASS_NAME, 'BdB')[:report_type[self.report]]:
-            head.append(col_name.text)
+            if '/' in col_name.text or col_name.text == 'TTM':
+                head.append(col_name.text)
 
         return head
 
