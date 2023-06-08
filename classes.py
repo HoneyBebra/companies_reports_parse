@@ -13,7 +13,7 @@ class Yahoo:
         options = webdriver.ChromeOptions()
         options.add_argument('--headless')
         self.driver = webdriver.Chrome(
-            r'C:\Users\Daniil Romanenko\PycharmProjects\pythonProject1\Pars\Price_Pars\chromedriver.exe',
+            r'C:\Users\seriy_pv\PycharmProjects\pythonProject\Price_Pars\chromedriver.exe',
             options=options)
 
     def get_url(self, ticker):
@@ -54,20 +54,23 @@ class Yahoo:
         time.sleep(random.uniform(0.5, 1))
         self.driver.find_element(By.CLASS_NAME, 'expandPf').click()
 
-        report_type = {'Income Statement': 5,
-                       'Balance Sheet': 4}
-
         data = []
         for row in self.driver.find_elements(By.CLASS_NAME, 'fi-row'):
-            names = [' '.join(row.text.split()[:-report_type[self.report]])]
+            names = ''
+            for name in row.text.split():
+                if any(str(digit) in name for digit in range(10)) or name == '-':
+                    continue
+                else:
+                    names += name + ' '
+
             nums = []
+            for num in row.text.replace(',', '').split():
+                if any(str(digit) in num for digit in range(10)) or num == '-':
+                    try:
+                        nums.append(float(num))
+                    except ValueError:
+                        nums.append(num)
 
-            for num in row.text.replace(',', '').split()[-report_type[self.report]:]:
-                try:
-                    nums.append(float(num))
-                except ValueError:
-                    nums.append(num)
-
-            data.append(names + nums)
+            data.append([names[:-1]] + nums)
 
         return data
